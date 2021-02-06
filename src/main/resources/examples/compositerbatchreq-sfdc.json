@@ -1,0 +1,11 @@
+{
+"batchRequests" : [
+    {
+    "method" : "PATCH",
+    "url" : "v51.0/sobjects/account/001D000000K0fXOIAZ",
+    "richInput" : {"Name" : "NewName"}
+    },{
+    "method" : "GET",
+    "url" : "v51.0/sobjects/account/001D000000K0fXOIAZ?fields=Name,BillingPostalCode"
+    }]
+} 

@@ -1,0 +1,23 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<types:mule xmlns:types="http://www.mulesoft.org/schema/mule/types">
+  <types:catalog>
+    <types:type name="comp-batch-req" format="json">
+      <types:shape format="weave" example="examples/compositerbatchreq-sfdc.json"><![CDATA[%dw 2.0
+
+type comp_batch_req = {|
+  batchRequests: Array<{|    method: String,     url: String,     richInput: {| Name: String |}  |}>
+|} {"example": "{\\\"batchRequests\\\":[{\\\"method\\\":\\\"PATCH\\\",\\\"url\\\":\\\"v51.0\\/sobjects\\/account\\/001D000000K0fXOIAZ\\\",\\\"richInput\\\":{\\\"Name\\\":\\\"NewName\\\"}},{\\\"method\\\":\\\"GET\\\",\\\"url\\\":\\\"v51.0\\/sobjects\\/account\\/001D000000K0fXOIAZ?fields=Name,BillingPostalCode\\\"}]}"}
+
+]]></types:shape>
+    </types:type>
+  </types:catalog>
+  <types:enrichment select="#1433c544-5fb1-420a-b280-3839982876c5">
+    <types:processor-declaration>
+      <types:input-event>
+        <types:message>
+          <types:payload type="comp-batch-req"/>
+        </types:message>
+      </types:input-event>
+    </types:processor-declaration>
+  </types:enrichment>
+</types:mule>

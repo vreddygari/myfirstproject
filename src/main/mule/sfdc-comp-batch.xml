@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<mule xmlns:ee="http://www.mulesoft.org/schema/mule/ee/core" xmlns:salesforce-composite="http://www.mulesoft.org/schema/mule/salesforce-composite"
+	xmlns:http="http://www.mulesoft.org/schema/mule/http"
+	xmlns="http://www.mulesoft.org/schema/mule/core" xmlns:doc="http://www.mulesoft.org/schema/mule/documentation" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd
+http://www.mulesoft.org/schema/mule/http http://www.mulesoft.org/schema/mule/http/current/mule-http.xsd
+http://www.mulesoft.org/schema/mule/salesforce-composite http://www.mulesoft.org/schema/mule/salesforce-composite/current/mule-salesforce-composite.xsd
+http://www.mulesoft.org/schema/mule/ee/core http://www.mulesoft.org/schema/mule/ee/core/current/mule-ee.xsd">
+	<http:listener-config name="HTTP_Listener_config" doc:name="HTTP Listener config" doc:id="c4a9865f-71d4-42e0-971c-0d068280e2c0" >
+		<http:listener-connection host="0.0.0.0" port="8081" />
+	</http:listener-config>
+	<salesforce-composite:composite-config name="Salesforce_Composite_Config" doc:name="Salesforce Composite Config" doc:id="99472426-0f39-4fd8-ae42-b0c4ca0c4142" >
+		<salesforce-composite:oauth-user-pass-connection consumerKey="3MVG9n_HvETGhr3CnOt5O2EdJD6PFm7M7.sWbyAERZW1fSu.RcnUmd7guPpQ0odI_s_xsa9TssoTpDdbgT6cg" consumerSecret="38FE4B39A10FC3EA6566A1348D8874DAC5E126C91122113218329E3787D0DD3F" username="vreddygari@agility.com" password="p@ssw0rd" securityToken="HC3MGLwlXdXE36fuSKCFHsz9P" />
+	</salesforce-composite:composite-config>
+	<flow name="sfdc-comp-batchFlow" doc:id="bc455808-8492-40f0-b32e-ef6963cf1c96" >
+		<http:listener doc:name="Listener" doc:id="dc8005fb-56dc-4a03-bd95-bb931be00dcd" config-ref="HTTP_Listener_config" path="/sfdcbatch"/>
+		<ee:transform doc:name="Transform Message" doc:id="1433c544-5fb1-420a-b280-3839982876c5" >
+			<ee:message >
+				<ee:set-payload ><![CDATA[%dw 2.0
+output application/java
+---
+{
+}]]></ee:set-payload>
+			</ee:message>
+		</ee:transform>
+		<salesforce-composite:execute-composite-batch doc:name="Execute composite batch" doc:id="f8a765ec-a8f1-43b6-ac26-a9b952323ae4" config-ref="Salesforce_Composite_Config"/>
+		<logger level="INFO" doc:name="Logger" doc:id="7b02deed-120c-47ce-83e0-f09eae52fbcb" message="#[paylaod]"/>
+	</flow>
+</mule>
